@@ -1,0 +1,13 @@
+tokenizer:
+convert string into space seperated tokens.
+<command> <arg> <pipeline> 
+
+execute commands:
+find the path if not absolute path provided. 
+use getenv("PATH")
+use stat()
+use fork/execv/wait to start program.
+execv takes in arguments an null terminated array of strings,
+
+func: convert input into token
+func: convert tokens into a array of strings

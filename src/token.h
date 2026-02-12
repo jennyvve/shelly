@@ -3,8 +3,6 @@
 #ifndef __TOKEN_H
 #define __TOKEN_H
 
-#define SY_TOKEN_NODE_MAX_VALUE_LENGTH 512
-
 #include "generic.h"
 
 typedef enum {
@@ -17,7 +15,7 @@ typedef void* sy_token_man_t;
 
 typedef struct {
     sy_token_e token;
-    char value[SY_TOKEN_NODE_MAX_VALUE_LENGTH];
+    char value[SY_MAX_ARG_LENGTH];
 } sy_token_node_t;
 
 #endif  // __TOKEN_H

@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 
 // The idea is that all token nodes are allocated in an arena (page)
 // for improved data locality. Through the manager the arena's are
@@ -85,6 +86,7 @@ sy_rt_e sy_token_man_new_arena(sy_token_man_cont_t* cont) {
     if ((new = sy_token_arena_malloc()) == NULL) {
         return SY_RT_ERR;
     }
+    memset(new, 0, sizeof(sy_token_arena_t));
     cont->pool[cont->pool_index++] = new;
     cont->current = new;
     return SY_RT_OK;
@@ -121,6 +123,15 @@ sy_token_man_t* sy_token_man_malloc(void) {
     }
 
     return cont->handle;
+}
+
+void sy_token_man_clear(sy_token_man_t* man) {
+    sy_token_man_cont_t* cont =
+        CONTAINER_OF(man, sy_token_man_cont_t, handle);
+
+    for (int i = 0; i < cont->pool_index; i++) {
+        cont->pool[i]->free_index = 0;
+    }
 }
 
 sy_token_man_free(sy_token_man_t* man) {
