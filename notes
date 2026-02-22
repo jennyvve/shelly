@@ -4,6 +4,7 @@ convert string into space seperated tokens.
 
 execute commands:
 find the path if not absolute path provided. 
+getcwd()
 use getenv("PATH")
 use stat()
 use fork/execv/wait to start program.
