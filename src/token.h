@@ -3,6 +3,8 @@
 #ifndef __TOKEN_H
 #define __TOKEN_H
 
+#include <stdbool.h>
+
 #include "generic.h"
 
 typedef enum {
