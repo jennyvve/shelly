@@ -6,11 +6,12 @@
 #include <string.h>
 
 // The idea is that all token nodes are allocated in an arena (page)
-// for improved data locality. Through the manager the arena's are
-// allocated and nodes are added or deleted. The manager makes sure
-// the correct arena is selected or allocated. Deletions are dirty,
-// thus new token nodes might by dirty. Also arena's are not freed
-// when empty.
+// for improved data locality. The manager manages multiple pages and
+// will make sure that new tokens are retrieved from undistributed
+// places inside the pages. It will allocate pages on the go.
+// Resets are dirty, thus new token have to be cleared during
+// retrieval. Could improve this logic by freeing arena pages that
+// haven't beeen used in a while.
 
 #define OFFSET_OF(type, member) ((size_t) & ((type*)0)->member)
 #define CONTAINER_OF(ptr, type, member)                      \

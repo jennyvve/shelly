@@ -1,13 +1,12 @@
 
-#include "parse.h"
-
 #include <stdbool.h>
 #include <unistd.h>
 
 #include "exec.h"
+#include "lexer.h"
 
-sy_rt_e sy_parse_text(sy_token_man_t *man, sy_token_node_t **node,
-                      char **str) {
+sy_rt_e lexer_text(sy_token_man_t *man, sy_token_node_t **node,
+                   char **str) {
     sy_token_node_t *prev = (*node);
     *node = (*node)->next;
 
@@ -34,41 +33,41 @@ sy_rt_e sy_parse_text(sy_token_man_t *man, sy_token_node_t **node,
                                                          : SY_RT_OK;
 }
 
-sy_rt_e sy_parse_whitespace(sy_token_man_t *, sy_token_node_t **,
-                            char **str) {
+sy_rt_e lexer_whitespace(sy_token_man_t *, sy_token_node_t **,
+                         char **str) {
     while (sy_is_whitespace(**str)) {
         (*str)++;
     }
     return SY_RT_OK;
 }
 
-sy_rt_e sy_parse_err(sy_token_man_t *, sy_token_node_t **, char **) {
+sy_rt_e lexer_err(sy_token_man_t *, sy_token_node_t **, char **) {
     return SY_RT_ERR;
 }
 
-sy_rt_e sy_parse_nill(sy_token_man_t *, sy_token_node_t **, char **) {
+sy_rt_e lexer_nill(sy_token_man_t *, sy_token_node_t **, char **) {
     return SY_RT_OK;
 }
 
-sy_rt_e sy_parse_newline(sy_token_man_t *, sy_token_node_t **node,
-                         char **) {
+sy_rt_e lexer_newline(sy_token_man_t *, sy_token_node_t **node,
+                      char **) {
     if (sy_token_node_get_token(*node) == SY_TOKEN_PIPELINE) {
         return SY_RT_ERR;
     }
     return SY_RT_FOUND_NEWLINE;
 }
 
-typedef sy_rt_e (*sy_parse_t)(sy_token_man_t *man,
+typedef sy_rt_e (*sy_lexer_t)(sy_token_man_t *man,
                               sy_token_node_t **node, char **str);
 
-sy_parse_t sy_parser[] = {
-    [0 ... 128] = sy_parse_text,
-    ['\n'] = sy_parse_newline,
-    [' '] = sy_parse_whitespace,
-    ['\t'] = sy_parse_whitespace,
+sy_lexer_t lexer[] = {
+    [0 ... 128] = lexer_text,
+    ['\n'] = lexer_newline,
+    [' '] = lexer_whitespace,
+    ['\t'] = lexer_whitespace,
 };
 
-sy_rt_e sy_parse(sy_token_man_t *man, sy_token_node_t *node,
+sy_rt_e sy_lexer(sy_token_man_t *man, sy_token_node_t *node,
                  char *str) {
     sy_rt_e rt;
 
@@ -87,7 +86,7 @@ sy_rt_e sy_parse(sy_token_man_t *man, sy_token_node_t *node,
         return SY_RT_ERR;
     }
 
-    while ((rt = sy_parser[(int)*str](man, &node, &str)) == SY_RT_OK);
+    while ((rt = lexer[(int)*str](man, &node, &str)) == SY_RT_OK);
 
     return rt;
 }

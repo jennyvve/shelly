@@ -8,7 +8,7 @@
 
 #include "exec.h"
 #include "generic.h"
-#include "parse.h"
+#include "lexer.h"
 #include "token.h"
 
 sy_rt_e sy_terminal_start(char *path, sy_token_man_t *man) {
@@ -28,7 +28,7 @@ sy_rt_e sy_terminal_start(char *path, sy_token_man_t *man) {
 
         while ((input_ptr = fgets(input_buffer, SY_MAX_ARG_LENGTH,
                                   stdin)) != NULL &&
-               (rt = sy_parse(man, node, input_ptr) !=
+               (rt = sy_lexer(man, node, input_ptr) !=
                      SY_RT_FOUND_NEWLINE) &&
                rt != SY_RT_ERR);
 
