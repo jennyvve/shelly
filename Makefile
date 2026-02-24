@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = --std=c2x -Wall -Wextra -Wunused -Wno-override-init -g -O1
+CFLAGS = --std=c1x -Wall -Wextra -Wunused -Wno-override-init -O3
 
 FORMAT = clang-format
 

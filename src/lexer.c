@@ -1,9 +1,10 @@
 
+#include "lexer.h"
+
 #include <stdbool.h>
 #include <unistd.h>
 
 #include "exec.h"
-#include "lexer.h"
 
 sy_rt_e lexer_text(sy_token_man_t *man, sy_token_node_t **node,
                    char **str) {
