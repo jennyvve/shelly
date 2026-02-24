@@ -18,11 +18,16 @@ typedef enum {
     IN_CMD_EXIT,
 } in_cmd_e;
 
+// Faster searching by mapping the first character to an array of
+// strings containing commands with this character as the first
+// character.
 char *in_cmds_strs[128][1] = {
     [(int)'c'][0] = "cd",
     [(int)'e'][0] = "exit",
 };
 
+// This maps the index of the array of strings from in_cmds_strs to an
+// id. Should be kept in the same order, or else, big trouble!!
 in_cmd_e in_cmds_id[128][2] = {
     [(int)'c'][0] = IN_CMD_CD,
     [(int)'e'][0] = IN_CMD_EXIT,
@@ -70,26 +75,27 @@ sy_rt_e incmd_exit(char *, char *[SY_MAX_ARG_LENGTH]) {
     return SY_RT_EXIT;
 }
 
+// Map command id's, found through the in_cmds_id map, to their
+// appropiate function.
 incmd_t in_cmds_exec[] = {
     [IN_CMD_CD] = incmd_cd,
     [IN_CMD_EXIT] = incmd_exit,
 };
 
-sy_rt_e attach_cmd_path(char *path, char cmd_path[SY_MAX_ARG_LENGTH],
+sy_rt_e attach_cmd_path(char *, char cmd_path[SY_MAX_ARG_LENGTH],
                         char cmd[SY_MAX_ARG_LENGTH]) {
     char *paths = getenv("PATH");
     char *ptr = paths;
-    unsigned int i = 0;
+    struct stat s;
 
+    // is an absolute path?
+    unsigned int i = 0;
     while (cmd[i] != '\0' && cmd[i++] != '/');
     if (cmd[i - 1] == '/') {
-        unsigned int s =
-            sy_str_cpy(&path, cmd_path, SY_MAX_ARG_LENGTH);
-        sy_str_cpy(&cmd, &cmd_path[s + 1], SY_MAX_ARG_LENGTH - s);
-        return SY_RT_OK;
+        sy_str_cpy(&cmd, cmd_path, SY_MAX_ARG_LENGTH);
+        return (stat(cmd_path, &s) == -1) ? SY_RT_END : SY_RT_OK;
     }
 
-    struct stat s;
     unsigned int j = 0;
     while (*ptr != '\0') {
         cmd_path[j++] = *ptr++;

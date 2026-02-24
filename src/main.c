@@ -54,14 +54,6 @@ sy_rt_e sy_terminal_start(void) {
             (rt = sy_parse(man, node, str) != SY_RT_FOUND_NEWLINE) &&
             rt != SY_RT_ERR);
 
-        printf("%s\n", node->value);
-
-        sy_token_node_t *n = node;
-        while (n) {
-            printf("%i, %s\n", n->token, n->value);
-            n = n->next;
-        }
-
         if (rt != SY_RT_ERR) {
             if ((rt = sy_exec(path_ptr, node)) == SY_RT_ERR) {
                 printf("!ERR failed to execute command.\n");
@@ -71,7 +63,6 @@ sy_rt_e sy_terminal_start(void) {
                 return SY_RT_OK;
             }
         } else {
-            printf("test!!\n");
             printf("!ERR failed to parse command.\n");
         }
 
