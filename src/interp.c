@@ -68,7 +68,7 @@ sy_rt_e interp_pipeline(char *path, sy_token_node_t *node,
 }
 
 sy_rt_e interp_none(char *path, sy_token_node_t *node,
-                    unsigned int *pipec, unsigned int *,
+                    unsigned int *pipec, unsigned int *argc,
                     interp_argv_t argv, pid_t pids[SY_MAX_PIDS]) {
     sy_rt_e rt;
     unsigned int pid_index = 0;
@@ -113,9 +113,9 @@ sy_rt_e interp_none(char *path, sy_token_node_t *node,
     return (rt == SY_RT_OK) ? SY_RT_END : rt;
 }
 
-sy_rt_e interp_err(char *path, sy_token_node_t *node, unsigned int *,
-                   unsigned int *, interp_argv_t argv,
-                   pid_t pids[SY_MAX_PIDS]) {
+sy_rt_e interp_err(char *path, sy_token_node_t *node,
+                   unsigned int *pipec, unsigned int *argc,
+                   interp_argv_t argv, pid_t pids[SY_MAX_PIDS]) {
     return SY_RT_ERR;
 }
 
