@@ -4,7 +4,7 @@
 
 #include <stdbool.h>
 
-#define SY_MAX_PIDS 128
+#define SY_MAX_PIDS 512
 #define SY_MAX_PIPEC 512
 #define SY_MAX_ARGC 512
 #define SY_MAX_ARG_LENGTH 512

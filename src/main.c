@@ -49,7 +49,7 @@ int main(void) {
     char *path;
     char *path_ptr;
 
-    if ((path = malloc(sizeof(path) * path_size)) == NULL) {
+    if ((path = malloc(path_size)) == NULL) {
         printf(
             "!ERR internal error, unable to allocate path "
             "memory.");
