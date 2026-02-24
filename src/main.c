@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "exec.h"
 #include "generic.h"
+#include "interp.h"
 #include "lexer.h"
 #include "token.h"
 
@@ -32,7 +32,7 @@ sy_rt_e sy_terminal_start(char *path, sy_token_man_t *man) {
                      SY_RT_FOUND_NEWLINE) &&
                rt != SY_RT_ERR);
 
-        rt = (rt != SY_RT_ERR) ? sy_exec(path, node) : rt;
+        rt = (rt != SY_RT_ERR) ? sy_interp(path, node) : rt;
 
         if (rt == SY_RT_ERR) {
             printf("!ERR failed to interpret command.\n");

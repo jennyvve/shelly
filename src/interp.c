@@ -1,4 +1,4 @@
-#include "exec.h"
+#include "interp.h"
 
 #include <signal.h>
 #include <stdlib.h>
@@ -31,11 +31,11 @@ typedef sy_rt_e (*interp_t)(char *path, sy_token_node_t *node,
                             interp_argv_t argv,
                             pid_t pids[SY_MAX_PIDS]);
 
-interp_t sy_interp[SY_TOKEN_INVALID + 1];
+interp_t interpreter[SY_TOKEN_INVALID + 1];
 
-sy_rt_e interp_command(char *, sy_token_node_t *node,
+sy_rt_e interp_command(char *path, sy_token_node_t *node,
                        unsigned int *pipec, unsigned int *argc,
-                       interp_argv_t argv, pid_t[SY_MAX_PIDS]) {
+                       interp_argv_t argv, pid_t pids[SY_MAX_PIDS]) {
     if (*argc != 0) {
         return SY_RT_ERR;
     }
@@ -44,9 +44,9 @@ sy_rt_e interp_command(char *, sy_token_node_t *node,
     return SY_RT_OK;
 }
 
-sy_rt_e interp_arg(char *, sy_token_node_t *node, unsigned int *pipec,
-                   unsigned int *argc, interp_argv_t argv,
-                   pid_t[SY_MAX_PIDS]) {
+sy_rt_e interp_arg(char *path, sy_token_node_t *node,
+                   unsigned int *pipec, unsigned int *argc,
+                   interp_argv_t argv, pid_t pids[SY_MAX_PIDS]) {
     if (*argc >= SY_MAX_ARGC) {
         return SY_RT_ERR;
     }
@@ -55,9 +55,9 @@ sy_rt_e interp_arg(char *, sy_token_node_t *node, unsigned int *pipec,
     return SY_RT_OK;
 }
 
-sy_rt_e interp_pipeline(char *, sy_token_node_t *,
+sy_rt_e interp_pipeline(char *path, sy_token_node_t *node,
                         unsigned int *pipec, unsigned int *argc,
-                        interp_argv_t, pid_t[SY_MAX_PIDS]) {
+                        interp_argv_t argv, pid_t pids[SY_MAX_PIDS]) {
     if (*pipec >= SY_MAX_PIPEC) {
         return SY_RT_ERR;
     }
@@ -67,7 +67,7 @@ sy_rt_e interp_pipeline(char *, sy_token_node_t *,
     return SY_RT_OK;
 }
 
-sy_rt_e interp_none(char *path, sy_token_node_t *,
+sy_rt_e interp_none(char *path, sy_token_node_t *node,
                     unsigned int *pipec, unsigned int *,
                     interp_argv_t argv, pid_t pids[SY_MAX_PIDS]) {
     sy_rt_e rt;
@@ -113,13 +113,13 @@ sy_rt_e interp_none(char *path, sy_token_node_t *,
     return (rt == SY_RT_OK) ? SY_RT_END : rt;
 }
 
-sy_rt_e interp_err(char *, sy_token_node_t *, unsigned int *,
-                   unsigned int *, interp_argv_t,
-                   pid_t[SY_MAX_PIDS]) {
+sy_rt_e interp_err(char *path, sy_token_node_t *node, unsigned int *,
+                   unsigned int *, interp_argv_t argv,
+                   pid_t pids[SY_MAX_PIDS]) {
     return SY_RT_ERR;
 }
 
-interp_t sy_interp[] = {
+interp_t interpreter[] = {
     [0 ... SY_TOKEN_INVALID] = interp_err,
     [SY_TOKEN_NONE] = interp_none,
     [SY_TOKEN_COMMAND] = interp_command,
@@ -127,14 +127,14 @@ interp_t sy_interp[] = {
     [SY_TOKEN_PIPELINE] = interp_pipeline,
 };
 
-sy_rt_e sy_exec(char *path, sy_token_node_t *node) {
+sy_rt_e sy_interp(char *path, sy_token_node_t *node) {
     pid_t pids[SY_MAX_PIDS] = {0};
     interp_argv_t argv = {0};
     unsigned int argc = 0;
     unsigned int pipec = 0;
     sy_rt_e rt;
 
-    while ((rt = sy_interp[sy_token_node_get_token(node)](
+    while ((rt = interpreter[sy_token_node_get_token(node)](
                 path, node, &pipec, &argc, argv, pids)) == SY_RT_OK) {
         node = node->next;
     }
