@@ -13,11 +13,14 @@ typedef enum {
     SY_RT_OK = 0,
     SY_RT_ERR,
     SY_RT_FOUND_NEWLINE,
+    SY_RT_NOT_FOUND,
     SY_RT_END,
     SY_RT_EXIT,
 } sy_rt_e;
 
-static inline bool sy_is_whitespace(char c) { return (c == ' '); }
+static inline bool sy_is_whitespace(char c) {
+    return (c == ' ' || c == '\t');
+}
 static inline bool sy_is_newline(char c) { return (c == '\n'); }
 static inline bool sy_is_null(char c) { return (c == '\0'); }
 static inline bool sy_is_text(char c) {

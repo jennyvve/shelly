@@ -35,7 +35,7 @@ typedef struct {
     unsigned int pool_index;
 } sy_token_man_cont_t;
 
-sy_token_node_t* sy_token_arena_new(sy_token_arena_t* arena) {
+sy_token_node_t* sy_token_retrieve_new(sy_token_arena_t* arena) {
     return &arena->tokens[arena->index++];
 }
 
@@ -64,19 +64,12 @@ sy_token_node_t* sy_token_new(sy_token_man_t* man) {
     sy_token_man_cont_t* cont =
         CONTAINER_OF(man, sy_token_man_cont_t, handle);
 
-    for (unsigned int i = 0;
-         cont->current->index >= SY_TOKEN_ARENA_MAX_TOKENS &&
-         i < cont->pool_index;
-         i++) {
-        cont->current = cont->pool[i];
-    }
-
     if (cont->current->index >= SY_TOKEN_ARENA_MAX_TOKENS &&
         sy_token_man_new_arena(cont) != SY_RT_OK) {
         return NULL;
     }
 
-    sy_token_node_t* node = sy_token_arena_new(cont->current);
+    sy_token_node_t* node = sy_token_retrieve_new(cont->current);
     memset(node, 0, sizeof(sy_token_node_t));
     return node;
 }
@@ -108,5 +101,9 @@ void sy_token_man_clear(sy_token_man_t* man) {
 void sy_token_man_free(sy_token_man_t* man) {
     sy_token_man_cont_t* cont =
         CONTAINER_OF(man, sy_token_man_cont_t, handle);
+
+    for (unsigned int i = 0; i < cont->pool_index; i++) {
+        sy_token_arena_free(cont->pool[i]);
+    }
     free(cont);
 }

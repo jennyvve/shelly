@@ -8,11 +8,16 @@
 
 sy_rt_e sy_parse_text(sy_token_man_t *man, sy_token_node_t **node,
                       char **str) {
+    sy_token_node_t *prev = (*node);
     *node = (*node)->next;
 
     switch (**str) {
         case '|':
+            if (sy_token_node_get_token(prev) == SY_TOKEN_PIPELINE) {
+                return SY_RT_ERR;
+            }
             sy_token_node_set_token(*node, SY_TOKEN_PIPELINE);
+            (*str)++;
             break;
         default:
             sy_str_cpy(str, (*node)->value, SY_MAX_ARG_LENGTH);
@@ -45,8 +50,11 @@ sy_rt_e sy_parse_nill(sy_token_man_t *, sy_token_node_t **, char **) {
     return SY_RT_OK;
 }
 
-sy_rt_e sy_parse_newline(sy_token_man_t *, sy_token_node_t **,
+sy_rt_e sy_parse_newline(sy_token_man_t *, sy_token_node_t **node,
                          char **) {
+    if (sy_token_node_get_token(*node) == SY_TOKEN_PIPELINE) {
+        return SY_RT_ERR;
+    }
     return SY_RT_FOUND_NEWLINE;
 }
 
@@ -68,7 +76,7 @@ sy_rt_e sy_parse(sy_token_man_t *man, sy_token_node_t *node,
         str++;
     }
 
-    if (*str == '|') {
+    if (*str == '|' || sy_is_null(*str) || sy_is_newline(*str)) {
         return SY_RT_ERR;
     }
 
