@@ -32,7 +32,7 @@ sy_rt_e lexer_text(sy_token_man_t *man, sy_token_node_t **node,
                                                          : SY_RT_OK;
 }
 
-sy_rt_e lexer_whitespace(sy_token_man_t *, sy_token_node_t **,
+sy_rt_e lexer_whitespace(sy_token_man_t *man, sy_token_node_t **node,
                          char **str) {
     while (sy_is_whitespace(**str)) {
         (*str)++;
@@ -40,16 +40,18 @@ sy_rt_e lexer_whitespace(sy_token_man_t *, sy_token_node_t **,
     return SY_RT_OK;
 }
 
-sy_rt_e lexer_err(sy_token_man_t *, sy_token_node_t **, char **) {
+sy_rt_e lexer_err(sy_token_man_t *man, sy_token_node_t **node,
+                  char **str) {
     return SY_RT_ERR;
 }
 
-sy_rt_e lexer_nill(sy_token_man_t *, sy_token_node_t **, char **) {
+sy_rt_e lexer_nill(sy_token_man_t *man, sy_token_node_t **node,
+                   char **str) {
     return SY_RT_OK;
 }
 
-sy_rt_e lexer_newline(sy_token_man_t *, sy_token_node_t **node,
-                      char **) {
+sy_rt_e lexer_newline(sy_token_man_t *man, sy_token_node_t **node,
+                      char **str) {
     if (sy_token_node_get_token(*node) == SY_TOKEN_PIPELINE) {
         return SY_RT_ERR;
     }

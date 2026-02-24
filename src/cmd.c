@@ -67,7 +67,7 @@ sy_rt_e incmd_cd(char *path, char *argv[SY_MAX_ARG_LENGTH]) {
     return SY_RT_OK;
 }
 
-sy_rt_e incmd_exit(char *, char *[SY_MAX_ARG_LENGTH]) {
+sy_rt_e incmd_exit(char *path, char *argv[SY_MAX_ARG_LENGTH]) {
     return SY_RT_EXIT;
 }
 
@@ -78,7 +78,7 @@ incmd_t in_cmds_exec[] = {
     [IN_CMD_EXIT] = incmd_exit,
 };
 
-sy_rt_e attach_cmd_path(char *, char cmd_path[SY_MAX_ARG_LENGTH],
+sy_rt_e attach_cmd_path(char *path, char cmd_path[SY_MAX_ARG_LENGTH],
                         char cmd[SY_MAX_ARG_LENGTH]) {
     char *paths = getenv("PATH");
     char *ptr = paths;
