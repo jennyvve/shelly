@@ -17,7 +17,7 @@ typedef enum {
 // Faster searching by mapping the first character to an array of
 // strings containing commands with this character as the first
 // character.
-char *in_cmds_strs[128][1] = {
+char *in_cmds_strs[128][2] = {
     [(int)'c'][0] = "cd",
     [(int)'e'][0] = "exit",
 };
@@ -95,10 +95,10 @@ sy_rt_e attach_cmd_path(char *path, char cmd_path[SY_MAX_ARG_LENGTH],
     unsigned int j = 0;
     while (*ptr != '\0') {
         cmd_path[j++] = *ptr++;
-        if (*ptr == ':') {
+        if (*ptr == ':' || *ptr == '\0') {
             cmd_path[j++] = '/';
-            char *c = cmd;
-            sy_str_cpy(&c, &cmd_path[j], SY_MAX_ARG_LENGTH - j);
+            sy_str_cpy(&(char *){cmd}, &cmd_path[j],
+                       SY_MAX_ARG_LENGTH - j);
             if (stat(cmd_path, &s) != -1) {
                 return SY_RT_OK;
             }
