@@ -1,3 +1,11 @@
+/**
+ * @file interp.c
+ * @author Jenny Vermeltfoort (jennyvermeltfoort@outlook.com,s3787494)
+ * @brief Simple interpreter.
+ *
+ * @copyright Copyright (c) 2026
+ */
+
 #include "interp.h"
 
 #include <signal.h>

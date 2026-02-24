@@ -1,3 +1,11 @@
+/**
+ * @file lexer.h
+ * @author Jenny Vermeltfoort (jennyvermeltfoort@outlook.com,s3787494)
+ * @brief Simple tokenizer.
+ *
+ * @copyright Copyright (c) 2026
+ */
+
 #ifndef __LEXER_H
 #define __LEXER_H
 

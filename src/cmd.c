@@ -1,3 +1,11 @@
+/**
+ * @file cmd.c
+ * @author Jenny Vermeltfoort (jennyvermeltfoort@outlook.com,s3787494)
+ * @brief Execution of commands.
+ *
+ * @copyright Copyright (c) 2026
+ */
+
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
@@ -84,7 +92,7 @@ sy_rt_e attach_cmd_path(char *path, char cmd_path[SY_MAX_ARG_LENGTH],
     char *ptr = paths;
     struct stat s;
 
-    // is an absolute path?
+    // is it an absolute path?
     unsigned int i = 0;
     while (cmd[i] != '\0' && cmd[i++] != '/');
     if (cmd[i - 1] == '/') {

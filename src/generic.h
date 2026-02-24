@@ -1,3 +1,10 @@
+/**
+ * @file generic.h
+ * @author Jenny Vermeltfoort (jennyvermeltfoort@outlook.com,s3787494)
+ * @brief Generic parameters for all sources.
+ *
+ * @copyright Copyright (c) 2026
+ */
 
 #ifndef __GENERIC_H
 #define __GENERIC_H

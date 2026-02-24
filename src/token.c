@@ -1,3 +1,11 @@
+/**
+ * @file token.c
+ * @author Jenny Vermeltfoort (jennyvermeltfoort@outlook.com,s3787494)
+ * @brief Simple arena manager
+ *
+ * @copyright Copyright (c) 2026
+ */
+
 #include "token.h"
 
 #include <stdbool.h>

@@ -1,3 +1,10 @@
+/**
+ * @file cmd.h
+ * @author Jenny Vermeltfoort (jennyvermeltfoort@outlook.com,s3787494)
+ * @brief Execution of commands.
+ *
+ * @copyright Copyright (c) 2026
+ */
 
 #ifndef __CND_H
 #define __CND_H

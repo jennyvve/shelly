@@ -1,4 +1,10 @@
-
+/**
+ * @file token.h
+ * @author Jenny Vermeltfoort (jennyvermeltfoort@outlook.com,s3787494)
+ * @brief Simple arena manager.
+ *
+ * @copyright Copyright (c) 2026
+ */
 
 #ifndef __TOKEN_H
 #define __TOKEN_H

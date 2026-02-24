@@ -1,3 +1,10 @@
+/**
+ * @file main.c
+ * @author Jenny Vermeltfoort (jennyvermeltfoort@outlook.com,s3787494)
+ * @brief Simple shell.
+ *
+ * @copyright Copyright (c) 2026
+ */
 
 #include <limits.h>
 #include <signal.h>
